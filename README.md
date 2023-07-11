@@ -2,6 +2,9 @@
 
 This project aims to predict stock prices using Support Vector Regression (SVR) with bootstrapping to generate prediction intervals.
 
+![SVR with Bootstrap](svr_stock.png)
+
+
 ## Libraries Used
 
 The following libraries are used in this project:
