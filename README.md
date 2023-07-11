@@ -13,7 +13,7 @@ The following libraries are used in this project:
 
 ## Data Loading and Preprocessing
 
-The data is loaded from a CSV file named 'one_day.csv'. The data includes stock prices for a given day, where the `X` variable represents the features (input data), and the `y` variable represents the target (output data). The features are standardized using the `StandardScaler` from `sklearn.preprocessing`. The data is then split into training and test sets.
+The data is taken from Forex trade Dataset (2020-2023). The data includes stock prices for a given day, where the `X` variable represents the features (input data), and the `y` variable represents the target (output data). The features are standardized using the `StandardScaler` from `sklearn.preprocessing`. The data is then split into training and test sets.
 
 ## Model Building and Bootstrapping
 
