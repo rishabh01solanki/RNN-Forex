@@ -1,38 +1,85 @@
-# Forex Price Forecasting: An Advanced Approach Using Recurrent Neural Networks (RNNs)
+# Forex Price Forecasting Using Recurrent Neural Networks (RNNs): A Quantitative Approach
 
-This project aims to predict stock prices using Support Vector Regression (SVR) with bootstrapping to generate prediction intervals.
+This project employs Recurrent Neural Networks (RNNs), specifically Long Short-Term Memory (LSTM) networks, to forecast foreign exchange (Forex) prices. RNNs are highly effective for sequence prediction problems due to their ability to remember past information. This feature is particularly useful in time-series forecasting, such as Forex price prediction.
 
-![SVR with Bootstrap](svr_stock.png)
+![RNN Architecture](rnn_architecture.png)
 
+## Libraries and Tools
 
-## Libraries Used
+- `numpy`: For numerical operations and manipulations.
+- `pandas`: For data loading and preprocessing.
+- `matplotlib` and `plotly`: For data visualization.
+- `scikit-learn`: For data scaling and transformations.
+- `tensorflow`: For implementing and training the RNN.
 
-The following libraries are used in this project:
+## Data Preprocessing and Feature Engineering
 
-- `numpy` and `pandas` for data handling and manipulation.
-- `matplotlib` for data visualization.
-- `sklearn` for machine learning model building and preprocessing of data.
-- `sklearn.utils.resample` for generating bootstrap samples.
+### Data Loading
 
-## Data Loading and Preprocessing
+The dataset spans from 2020 to 2023 and contains various attributes such as opening, highest, lowest, and closing prices for specific time intervals.
 
-The data is taken from Forex trade Dataset (2020-2023). The data includes stock prices for a given day, where the `X` variable represents the features (input data), and the `y` variable represents the target (output data). The features are standardized using the `StandardScaler` from `sklearn.preprocessing`. The data is then split into training and test sets.
+### Min-Max Scaling
 
-## Model Building and Bootstrapping
+Before feeding the data into the RNN model, the features are normalized using Min-Max scaling, expressed as:
 
-I use a SVR model with a radial basis function (RBF) kernel. The model is trained on bootstrap samples of the training data. For each bootstrap sample, the model's predictions on the test set are stored. This process is repeated for a specified number of bootstrap samples (in this case, 1000).
+\[
+X_{\text{scaled}} = \frac{X - X_{\text{min}}}{X_{\text{max}} - X_{\text{min}}}
+\]
 
-## Prediction Intervals
+where \(X\) is the original feature vector, \(X_{\text{min}}\) and \(X_{\text{max}}\) are the minimum and maximum values of the feature vector, respectively.
 
-The lower and upper bounds of the prediction intervals are calculated by taking the 2.5th and 97.5th percentiles of the bootstrap predictions, respectively. These bounds are then transformed back to the original scale of the target variable.
+### Sequence Generation
 
-## Visualization
+The time-series data is transformed into sequences \( S = \{s_1, s_2, \ldots, s_{T}\} \) where each sequence \( s_t \) consists of 60 time steps.
 
-The predictions, along with the prediction intervals, are visualized using `matplotlib`. The visualization includes the actual prices (in red) and the predicted prices (in blue) with the prediction intervals shaded in blue.
+## Model Architecture and Mathematical Formulation
 
-## Code Usage
+### LSTM Architecture
 
-To use the code, you need to provide a CSV file with your data. The CSV file should be structured such that the first column contains the date, the next three columns contain the features (input data), and the last column contains the target variable (stock prices). Modify the path in the code to point to your CSV file.
+The LSTM architecture consists of three sequential LSTM layers followed by a dense output layer. The LSTM layers aim to capture the temporal dependencies of the Forex prices.
 
-Please ensure that you have the necessary Python libraries installed in your environment. If not, you can install them using pip:
+### Mathematical Representation
 
+The LSTM cell can be mathematically represented by the following equations:
+
+\[
+f_t = \sigma(W_f \cdot [h_{t-1}, x_t] + b_f)
+\]
+\[
+i_t = \sigma(W_i \cdot [h_{t-1}, x_t] + b_i)
+\]
+\[
+\tilde{C}_t = \tanh(W_C \cdot [h_{t-1}, x_t] + b_C)
+\]
+\[
+C_t = f_t \times C_{t-1} + i_t \times \tilde{C}_t
+\]
+\[
+o_t = \sigma(W_o \cdot [h_{t-1}, x_t] + b_o)
+\]
+\[
+h_t = o_t \times \tanh(C_t)
+\]
+
+Here, \( f_t, i_t, o_t \) are the forget, input, and output gates, respectively. \( \tilde{C}_t \) and \( C_t \) are the candidate and final cell states, and \( h_t \) is the hidden state. \( W \) and \( b \) are learnable parameters.
+
+## Evaluation Metrics and Results
+
+The model performance is evaluated using Mean Squared Error (MSE), expressed as:
+
+\[
+\text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (y_{\text{true},i} - y_{\text{pred},i})^2
+\]
+
+## Interactive Data Visualization
+
+An interactive Plotly graph is used for the visualization, enabling detailed analysis by zooming, panning, and hovering over the data points.
+
+## Code Implementation
+
+To run the code, ensure you have a well-structured CSV file with Forex data, and update the `file_path` in the code to point to your dataset.
+
+To install the required Python packages, execute:
+
+```bash
+pip install numpy pandas matplotlib plotly scikit-learn tensorflow
