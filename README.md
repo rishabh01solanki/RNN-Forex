@@ -1,4 +1,4 @@
-# Stock Price Forecasting using Support Vector Regression (SVR) and Bootstrap
+# Forex Price Forecasting: An Advanced Approach Using Recurrent Neural Networks (RNNs)
 
 This project aims to predict stock prices using Support Vector Regression (SVR) with bootstrapping to generate prediction intervals.
 
