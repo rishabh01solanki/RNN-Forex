@@ -2,7 +2,7 @@
 
 This project employs Recurrent Neural Networks (RNNs), specifically Long Short-Term Memory (LSTM) networks, to forecast foreign exchange (Forex) prices. RNNs are highly effective for sequence prediction problems due to their ability to remember past information. This feature is particularly useful in time-series forecasting, such as Forex price prediction.
 
-![RNN Architecture](rnn_architecture.png)
+![RNN Architecture](forex_euro_us.png)
 
 ## Libraries and Tools
 
