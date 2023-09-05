@@ -1,85 +1,68 @@
-# Forex Price Forecasting Using Recurrent Neural Networks (RNNs): A Quantitative Approach
+# Forex Price Forecasting Using Recurrent Neural Networks (RNNs)
 
-This project employs Recurrent Neural Networks (RNNs), specifically Long Short-Term Memory (LSTM) networks, to forecast foreign exchange (Forex) prices. RNNs are highly effective for sequence prediction problems due to their ability to remember past information. This feature is particularly useful in time-series forecasting, such as Forex price prediction.
+This project focuses on the application of Recurrent Neural Networks (RNNs), specifically Long Short-Term Memory (LSTM) networks, to forecast foreign exchange (Forex) prices. RNNs have the capability to remember sequences, making them ideal for time-series data like Forex rates.
 
 ![RNN Architecture](forex_euro_us.png)
 
+## Table of Contents
+1. [Libraries and Tools](#libraries-and-tools)
+2. [Data Preprocessing and Feature Engineering](#data-preprocessing-and-feature-engineering)
+3. [Model Architecture](#model-architecture)
+4. [Evaluation Metrics](#evaluation-metrics)
+5. [Interactive Data Visualization](#interactive-data-visualization)
+6. [Code Implementation](#code-implementation)
+
 ## Libraries and Tools
 
-- `numpy`: For numerical operations and manipulations.
-- `pandas`: For data loading and preprocessing.
-- `matplotlib` and `plotly`: For data visualization.
-- `scikit-learn`: For data scaling and transformations.
-- `tensorflow`: For implementing and training the RNN.
+- `numpy`: For array manipulations and mathematical operations.
+- `pandas`: For data ingestion, manipulation, and dataframes.
+- `matplotlib`: For generating static plots and data visualizations.
+- `plotly`: For creating interactive charts and figures.
+- `scikit-learn`: For preprocessing data and scaling features.
+- `tensorflow`: For designing, training, and evaluating the neural network.
 
 ## Data Preprocessing and Feature Engineering
 
+### Data Source and Attributes
+
+The dataset spans from 2020 to 2023, capturing various aspects of Forex rates such as the opening, highest, lowest, and closing prices over different intervals.
+
 ### Data Loading
 
-The dataset spans from 2020 to 2023 and contains various attributes such as opening, highest, lowest, and closing prices for specific time intervals.
+Data is read into Pandas dataframes and initial inspections are performed to understand the shape, size, and data types of the attributes.
 
-### Min-Max Scaling
+### Data Scaling
 
-Before feeding the data into the RNN model, the features are normalized using Min-Max scaling, expressed as:
+A feature scaling step normalizes the feature set using Min-Max scaling, ensuring that the values lie in a similar range. This is critical for the efficient training of neural networks.
 
-\[
-X_{\text{scaled}} = \frac{X - X_{\text{min}}}{X_{\text{max}} - X_{\text{min}}}
-\]
+### Time-Series Transformation
 
-where \(X\) is the original feature vector, \(X_{\text{min}}\) and \(X_{\text{max}}\) are the minimum and maximum values of the feature vector, respectively.
+The data is then transformed into sequences that represent the Forex rates at different time intervals. Each sequence consists of 60 time steps, which act as the features for training the model.
 
-### Sequence Generation
+## Model Architecture
 
-The time-series data is transformed into sequences \( S = \{s_1, s_2, \ldots, s_{T}\} \) where each sequence \( s_t \) consists of 60 time steps.
+The neural network used in this project is a specific type of RNN known as Long Short-Term Memory (LSTM). It consists of three LSTM layers followed by a dense output layer.
 
-## Model Architecture and Mathematical Formulation
+### Layer Details
 
-### LSTM Architecture
+- The first LSTM layer has 50 units and returns sequences to match the input shape.
+- The second LSTM layer also has 50 units and returns sequences.
+- The third LSTM layer has 50 units but does not return sequences.
+- The dense layer has one unit, corresponding to the output feature, which is the Forex rate at the next time interval.
 
-The LSTM architecture consists of three sequential LSTM layers followed by a dense output layer. The LSTM layers aim to capture the temporal dependencies of the Forex prices.
+## Evaluation Metrics
 
-### Mathematical Representation
+### Mean Squared Error
 
-The LSTM cell can be mathematically represented by the following equations:
-
-\[
-f_t = \sigma(W_f \cdot [h_{t-1}, x_t] + b_f)
-\]
-\[
-i_t = \sigma(W_i \cdot [h_{t-1}, x_t] + b_i)
-\]
-\[
-\tilde{C}_t = \tanh(W_C \cdot [h_{t-1}, x_t] + b_C)
-\]
-\[
-C_t = f_t \times C_{t-1} + i_t \times \tilde{C}_t
-\]
-\[
-o_t = \sigma(W_o \cdot [h_{t-1}, x_t] + b_o)
-\]
-\[
-h_t = o_t \times \tanh(C_t)
-\]
-
-Here, \( f_t, i_t, o_t \) are the forget, input, and output gates, respectively. \( \tilde{C}_t \) and \( C_t \) are the candidate and final cell states, and \( h_t \) is the hidden state. \( W \) and \( b \) are learnable parameters.
-
-## Evaluation Metrics and Results
-
-The model performance is evaluated using Mean Squared Error (MSE), expressed as:
-
-\[
-\text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (y_{\text{true},i} - y_{\text{pred},i})^2
-\]
+The model's performance is assessed using the Mean Squared Error (MSE) which is a measure of the average of the squares of the errors between the predicted and actual values.
 
 ## Interactive Data Visualization
 
-An interactive Plotly graph is used for the visualization, enabling detailed analysis by zooming, panning, and hovering over the data points.
+Post-training, the model's predictions are plotted alongside the actual data points using Plotly, providing an interactive way to assess model performance. The Plotly graph supports zooming, panning, and hovering over data points, allowing for a thorough examination of the model's accuracy.
 
 ## Code Implementation
 
-To run the code, ensure you have a well-structured CSV file with Forex data, and update the `file_path` in the code to point to your dataset.
-
-To install the required Python packages, execute:
+To run the code, a well-structured CSV file with Forex rates is needed. The `file_path` in the code should be updated to point to this file. All required Python packages can be installed using pip:
 
 ```bash
 pip install numpy pandas matplotlib plotly scikit-learn tensorflow
